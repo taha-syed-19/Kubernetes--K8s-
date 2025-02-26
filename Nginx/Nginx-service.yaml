@@ -13,3 +13,23 @@ spec:
     targetPort: 80
   
   clusterIP: 10.96.0.100 
+
+
+  #to use LB of AWS in EKS Cluster use the svc as:
+apiVersion: v1
+kind: Service
+metadata: 
+  name: nginx-service-pods-test
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing" #added so that LB will be installed in public subent allowing the external traffix from browser to access the application via LB 
+  
+spec:
+  selector:
+    app: nginx
+  
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+  
+  type: LoadBalancer
